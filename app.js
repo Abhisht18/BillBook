@@ -122,7 +122,10 @@ app.get("/client/:id", async(req, res) => { //detail of a particular client fetc
                 const transac = clientData[0].transactions.filter(trans => {
                     trans.party_name == client[0].party_name
                 });
-                return res.json({success:true, client: client[0], transaction: transac});
+                const transacc = transac.map(({ _id, payment_id, date, typ, amount}) => ({
+                     _id, payment_id, date, typ, amount
+                }));
+                return res.json({success:true, client: client[0], transaction: transacc});
             }
         })
         .catch(err => {
