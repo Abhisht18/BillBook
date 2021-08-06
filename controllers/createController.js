@@ -1,21 +1,5 @@
 const Client = require('../models/client-model');
 
-const get_createInvoice = async(req, res) => {
-    Client.find()
-        .then(clientData => {
-            const clientsLog = clientData[0].clients.map(({party_name, _id, balance}) => ({
-                party_name, _id, balance
-            }));
-            const itemLog = clientData[0].items.map(({name, _id, sales_price}) => ({
-                name, _id, sales_price
-            }));
-            res.json({success: true, clients: clientsLog, items: itemLog});
-        })
-        .catch(err => {
-            console.log(err);
-        }); 
-}
-
 const createItem = async(req, res)=>{
     const obj = req.body;
     if(obj.sales_price) obj.stock = _.toNumber(obj.stock);
@@ -40,7 +24,7 @@ const createItem = async(req, res)=>{
 }
 
 const createClient = async(req, res) => {
-    req.body.total_paid_amount = 0;
+    req.body.total_amount = 0;
     req.body.total_paid_amount = 0;
     const obj = req.body;
     Client.find()
@@ -61,8 +45,17 @@ const createClient = async(req, res) => {
         });
 }
 
+const createInvoice = async (req, res) =>{
+
+}
+
+const createTransaction = async (req, res) =>{
+    
+}
+
 module.exports = {
-    get_createInvoice,
     createItem,
-    createClient
+    createClient,
+    createInvoice,
+    createTransaction
 }

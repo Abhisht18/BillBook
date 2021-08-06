@@ -43,8 +43,6 @@ const clientSchema = new mongoose.Schema({
                     quantity: Number,
                 }], 
             total_bill: Number,
-            paid_amount: Number,
-            balance_amount: Number, 
             notes: [String]
         }], 
 

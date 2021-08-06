@@ -3,9 +3,10 @@ const createController = require('../controllers/createController');
 
 const router = express.Router();
 
-router.get('/invoice', createController.get_createInvoice);
 router.post('/item', createController.createItem);
 router.post('/client', createController.createClient);
+router.post('/invoice', createController.createInvoice);
+router.post('/transaction', createController.createTransaction);
 
 module.exports = router;
 
