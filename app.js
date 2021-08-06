@@ -19,11 +19,17 @@ app.use(express.static('public'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
  
-// If there is no data in MongoDB this will create an empty data in it.
+// If there is no data in MongoDB this will create an empty dummy data in it.
 Client.find()   
     .then(clientData => {
         if(!clientData.length){
             const client = new Client;
+            client.total_sales=0;
+            client.total_paid=0;
+            client.total_unpaid=0;
+            client.total_balance=0;
+            client.to_collect=0;
+            client.to_pay=0;
             client.save();
         }
     })
@@ -31,19 +37,9 @@ Client.find()
         if(err) console.log(err);
     });
 
-// const client = new Client;
-// let obj = {
-//     date: "12 Jun",
-//     typ: "Payment In",
-//     party_name: "Animal",
-//     payment_id: "12Jun1200",
-//     amount: 1200
-// }
-// client.transactions.push(obj);
-// client.save();
-// console.log(client);
 
-app.get("/", (req,res)=>{
+
+app.get("/", (req,res)=>{ //For Homepage This will return All Transactions
     Client.find()
         .then(clientData => {
             const transactionLog = clientData[0].transactions;
@@ -88,7 +84,7 @@ app.get("/:type", async(req, res) => {   //All data for (payment in) and (invoic
         })
 })
 
-app.get("/transaction/:id", async(req,res) => {  //Function for getting a particular invoice or payment details and here is the id of that transaction object and not Clients DB _id.
+app.get("/transaction/:id", async(req,res) => {  //Function for getting a particular invoice or payment details and here is the id of that transaction object and not ClientsDB _id.
     const id = req.params.id;
     await Client.find({}, (err, clientData) => {
         if(err){
@@ -109,7 +105,7 @@ app.get("/transaction/:id", async(req,res) => {  //Function for getting a partic
     });
 })
 
-app.get("/client/:id", async(req, res) => { //detail of a particular client fetched using Object_id
+app.get("/client/:id", async(req, res) => { //detail of a particular client fetched using that particular client's Object_id
     const id = req.params.id;
     Client.find()
         .then(clientData => {
