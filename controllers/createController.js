@@ -1,4 +1,6 @@
 const Client = require('../models/client-model');
+const _ = require("lodash");
+
 
 const createItem = async(req, res)=>{
     const obj = req.body;
@@ -46,7 +48,7 @@ const createClient = async(req, res) => {
 }
 
 const createInvoice = async (req, res) =>{
-
+    
 }
 
 const createTransaction = async (req, res) =>{

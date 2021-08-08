@@ -5,6 +5,7 @@ const _ = require("lodash");
 const Client = require("./models/client-model.js")
 const createRoutes = require('./routes/createRoutes');
 const getRoutes = require('./routes/getRoutes');
+const deleteRoutes = require('./routes/deleteRoutes');
 
 const app = express();
 
@@ -38,8 +39,6 @@ Client.find()
         if(err) console.log(err);
     });
 
-
-
 app.get("/", (req,res)=>{ //For Homepage This will return All Transactions
     Client.find()
         .then(clientData => {
@@ -57,3 +56,5 @@ app.get("/", (req,res)=>{ //For Homepage This will return All Transactions
 
 app.use("/create", createRoutes); //MVC
 app.use("/get", getRoutes); //MVC
+app.use("/delete", deleteRoutes); //MVC
+
