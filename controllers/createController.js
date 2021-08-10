@@ -48,11 +48,44 @@ const createClient = async(req, res) => {
 }
 
 const createInvoice = async (req, res) =>{
-    
+    const obj = req.body;
+    obj.total_bill = _.toNumber(obj.total_bill);
+    obj.invoice_items.map(item => {
+        item.quantity = _.toNumber(item.quantity);
+    });
+    Client.find()
+        .then(clientData => {
+            const result = clientData[0];
+            result.sales_invoice.push(obj);
+            const newObj = {
+                party_name: obj.party_name,
+                typ: "Invoice",
+                payment_id: obj.invoice_number,
+                amount: obj.total_bill,
+                date: obj.invoice_date,
+                notes: obj.notes
+            }
+            result.transactions.push(newObj);
+            result.save();
+        })
+        .catch(err => {
+            console.log(err);
+        });
 }
 
 const createTransaction = async (req, res) =>{
-    
+    const obj = req.body;
+    obj.typ = "Payment";
+    obj.amount = _.toNumber(obj.amount);
+    Client.find()
+        .then(clientData => {
+            const result = clientData[0];
+            result.transactions.push(obj);
+            result.save();
+        })
+        .catch(err => {
+            console.log(err);
+        });
 }
 
 module.exports = {

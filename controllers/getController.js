@@ -90,10 +90,41 @@ const getClientById = async(req, res) => { //detail of a particular client fetch
         }) 
 }
 
+const getItems = async(req, res) => {
+    Client.find()
+        .then(clientData => {
+            const items = clientData[0].items;
+            itemLog = items.map(({name, _id, hsn_code, stock, sales_price}) => ({
+                name, _id, hsn_code, stock, sales_price
+            }));
+            res.json({success: true, allItems : itemLog });
+        })
+        .catch(err => {
+            console.log(err);
+        })
+}
+
+const getItemById = async(req, res) => {
+    const id = req.params.id;
+    Client.find()
+        .then(clientData => {
+            const items = clientData[0].items;
+            itemLog = items.filter((item) => {
+               return item._id == id;
+            })
+            res.json({success: true, allItems : itemLog[0] });
+        })
+        .catch(err => {
+            console.log(err);
+        })
+}
+
 module.exports = {
     getForCreateInvoice,
     getClientById,
     getClients,
     getTransactionOfType,
+    getItems,
+    getItemById,
     getTransactionById
 }
