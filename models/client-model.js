@@ -12,11 +12,11 @@ const clientSchema = new mongoose.Schema({
     items: [{
             name: String,
             stock: Number,
-            as_of_date: String, 
-            sales_price: Number,
+            //as_of_date: String, 
+           // sales_price: Number,
             purchase_price: Number,
             hsn_code: String,
-            tax: String
+           // tax: String
         }],
 
     clients:[{

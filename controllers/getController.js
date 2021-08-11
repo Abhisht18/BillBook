@@ -20,8 +20,8 @@ const getForCreateInvoice = async(req, res) => {
 const getClients = async(req, res)=>{ //returns all clients
     Client.find()
         .then(clientData => {
-            const clientsLog = clientData[0].clients.map(({party_name, _id, mobile_number, balance}) => ({
-                party_name, _id, mobile_number, balance
+            const clientsLog = clientData[0].clients.map(({party_name, _id, mobile_number, balance,billing_address,gst_in}) => ({
+                party_name, _id, mobile_number, balance, billing_address,gst_in
             }));
             res.json({success: true, allClients: clientsLog });
         })
@@ -94,8 +94,8 @@ const getItems = async(req, res) => {
     Client.find()
         .then(clientData => {
             const items = clientData[0].items;
-            itemLog = items.map(({name, _id, hsn_code, stock, sales_price}) => ({
-                name, _id, hsn_code, stock, sales_price
+            itemLog = items.map(({name, _id, hsn_code, stock, purchase_price}) => ({
+                name, _id, hsn_code, stock, purchase_price
             }));
             res.json({success: true, allItems : itemLog });
         })

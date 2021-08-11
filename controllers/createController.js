@@ -65,6 +65,8 @@ const createInvoice = async (req, res) =>{
                 date: obj.invoice_date,
                 notes: obj.notes
             }
+            const client = result.clients.filter(client => client.party_name === obj.party_name);
+            client[0].balance += obj.total_bill;
             result.transactions.push(newObj);
             result.save();
         })
@@ -80,6 +82,10 @@ const createTransaction = async (req, res) =>{
     Client.find()
         .then(clientData => {
             const result = clientData[0];
+
+            const client = result.clients.filter(client => client.party_name === obj.party_name);
+            client[0].balance -= obj.amount;
+
             result.transactions.push(obj);
             result.save();
         })
