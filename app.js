@@ -2,17 +2,20 @@ const express = require("express");
 const bodyParser = require("body-parser");
 const mongoose = require("mongoose");
 const _ = require("lodash");
+const cors=require('cors');
 const Client = require("./models/client-model.js")
 const createRoutes = require('./routes/createRoutes');
 const getRoutes = require('./routes/getRoutes');
 const deleteRoutes = require('./routes/deleteRoutes');
 
 const app = express();
+app.use(cors());
+//const dbURL = "mongodb://localhost:27017/clientDB";
 
-const dbURL = "mongodb://localhost:27017/clientDB";
+const dbURL='mongodb+srv://sagarmongodb:9937170872@cluster0.hh7px.mongodb.net/myFirstDatabase?retryWrites=true&w=majority'
 
 mongoose.connect(dbURL, { useNewUrlParser: true, useUnifiedTopology: true })
-    .then(() => app.listen(3000))
+    .then(() => app.listen(4000))
     .catch(err => console.log(err));
 
 app.set('view engine', 'ejs');
@@ -44,8 +47,8 @@ app.get("/", (req,res)=>{ //For Homepage This will return All Transactions
         .then(clientData => {
             const transactionLog = clientData[0].transactions;
             transactionLog.reverse(); //Sorted in order of time it was created
-            const transact = transactionLog.map(({party_name, _id, typ, date, amount}) => ({
-                party_name, _id, typ, date, amount
+            const transact = transactionLog.map(({party_name, _id, typ, date, amount,payment_id}) => ({
+                party_name, _id, typ, date, amount,payment_id
             }));
             res.json({success: true, allTransaction : transact});
         })
