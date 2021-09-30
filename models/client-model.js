@@ -2,21 +2,22 @@ const mongoose = require('mongoose');
 
 const clientSchema = new mongoose.Schema({
 
+    company_name: String,
+
     total_sales: Number,
     total_paid: Number,
     total_unpaid: Number,
-    total_balance: Number,
     to_collect: Number,
     to_pay: Number,
 
     items: [{
             name: String,
             stock: Number,
-            //as_of_date: String, 
-           // sales_price: Number,
+            as_of_date: String, 
+            sales_price: Number,
             purchase_price: Number,
             hsn_code: String,
-           // tax: String
+            tax: String
         }],
 
     clients:[{
@@ -43,6 +44,13 @@ const clientSchema = new mongoose.Schema({
                     quantity: Number,
                 }], 
             total_bill: Number,
+            balance: Number,              //* updated this part in create controller. This paid is to keep track for linking trnsactions.
+            linked_transac: [
+                {
+                   payment_id: String,
+                   amount: Number 
+                }
+            ],
             notes: [String]
         }], 
 
@@ -53,10 +61,23 @@ const clientSchema = new mongoose.Schema({
             party_name: String,
             typ: String,
             payment_id: String,
-            amount: Number,
+            tot_amount: Number,
+            left_amount: Number,
             date: String,
+            linked_invoice: [{
+                date: String,
+                invoice_number: String,
+                total_bill: Number,
+                amount: Number
+            }],
             notes: [String]
-        }]
+        }],
+
+    users: [{
+        email: String,
+        password: String,
+        role: String
+    }]
 },{ typeKey: '$type' });
 
 const Client = mongoose.model('Client', clientSchema);

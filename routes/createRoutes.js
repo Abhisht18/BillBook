@@ -1,12 +1,17 @@
 const express = require('express');
 const createController = require('../controllers/createController');
+const {admin, editor} = require('../middleware/authMiddleware');
+
 
 const router = express.Router();
 
-router.post('/item', createController.createItem);
-router.post('/client', createController.createClient);
-router.post('/invoice', createController.createInvoice);
-router.post('/transaction', createController.createTransaction);
+// router.post('/signup', admin, createController.createUser);
+// router.post('/login', createController.loginUser);
+
+router.post('/item', editor, createController.createItem);
+router.post('/client',editor, createController.createClient);
+router.post('/invoice',editor, createController.createInvoice);
+router.post('/transaction',editor, createController.createTransaction);
 
 module.exports = router;
 
